@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Create your account · Ledgerwatch{% endblock %}
+{% block bodyclass %}login-body{% endblock %}
+{% block body %}
+<div class="login">
+  <section class="login-art">
+    <a class="wordmark wordmark-light" href="{{ url_for('pages.home') }}">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l10 12-10 12L6 16z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M16 11v10M11.5 16h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Ledgerwatch</span>
+    </a>
+    <div class="login-art-body">
+      <p class="login-statement">Open an account in a minute.</p>
+      <p class="login-note">You get a savings account straight away. Add funds, send money, and every transfer is checked by the fraud rules as it happens.</p>
+    </div>
+  </section>
+
+  <main class="login-panel signup-panel">
+    <form id="signup-form" class="login-form signup-form" novalidate>
+      <h1>Create your account</h1>
+      <p class="muted">Already registered? <a href="{{ url_for('pages.login_page') }}">Sign in</a></p>
+
+      {% if problem or not branches %}
+      <p class="form-error" role="alert">Sign-up is unavailable right now because the branch list could not be loaded. Please try again shortly.</p>
+      {% endif %}
+
+      <label for="fullName">Full name</label>
+      <input id="fullName" name="fullName" autocomplete="name" maxlength="100" required autofocus>
+      <p class="field-error" data-for="fullName" hidden></p>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" maxlength="150" required>
+      <p class="field-error" data-for="email" hidden></p>
+
+      <div class="two">
+        <div>
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="9876543210" required>
+          <p class="field-error" data-for="phone" hidden></p>
+        </div>
+        <div>
+          <label for="dob">Date of birth</label>
+          <input id="dob" name="dob" type="date" autocomplete="bday" required>
+          <p class="field-error" data-for="dob" hidden></p>
+        </div>
+      </div>
+
+      <div class="two">
+        <div>
+          <label for="homeCity">Home city</label>
+          <input id="homeCity" name="homeCity" autocomplete="address-level2" maxlength="60" placeholder="Mumbai" required>
+          <p class="field-error" data-for="homeCity" hidden></p>
+        </div>
+        <div>
+          <label for="branchId">Branch</label>
+          <select id="branchId" name="branchId" required>
+            {% for b in branches %}<option value="{{ b.branch_id }}">{{ b.branch_name }}</option>{% endfor %}
+          </select>
+          <p class="field-error" data-for="branchId" hidden></p>
+        </div>
+      </div>
+
+      <div class="two">
+        <div>
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" maxlength="128" required>
+          <p class="field-error" data-for="password" hidden></p>
+        </div>
+        <div>
+          <label for="confirmPassword">Confirm password</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" maxlength="128" required>
+          <p class="field-error" data-for="confirmPassword" hidden></p>
+        </div>
+      </div>
+      <p class="field-note">At least 8 characters, with a letter and a number.
+        <button type="button" class="copy" id="toggle-passwords" aria-pressed="false">Show passwords</button></p>
+
+      <p id="signup-error" class="form-error" role="alert" hidden></p>
+
+      <button class="btn btn-primary btn-block" id="signup-submit" type="submit" {% if not branches %}disabled{% endif %}>Create account</button>
+    </form>
+  </main>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/signup.js') }}"></script>{% endblock %}

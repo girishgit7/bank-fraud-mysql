@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Ledgerwatch{% endblock %}
+{% block bodyclass %}login-body{% endblock %}
+{% block body %}
+<div class="login">
+  <section class="login-art">
+    <div class="wordmark wordmark-light">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l10 12-10 12L6 16z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M16 11v10M11.5 16h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Ledgerwatch</span>
+    </div>
+    <div class="login-art-body">
+      <p class="login-statement">Every transfer, checked the moment it happens.</p>
+      <p class="login-note">Large amounts, rapid bursts and unfamiliar locations are caught by rules that run inside the database, then reviewed by an analyst.</p>
+    </div>
+  </section>
+
+  <main class="login-panel">
+    <form id="login-form" class="login-form" novalidate>
+      <h1>Sign in</h1>
+      <p class="muted">Welcome back. Sign in to see your accounts.</p>
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="username" required autofocus>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+      <p id="login-error" class="form-error" role="alert" hidden></p>
+
+      <button class="btn btn-primary btn-block" id="login-submit" type="submit">Sign in</button>
+
+      <p class="alt-link">New to Ledgerwatch? <a href="{{ url_for('pages.signup_page') }}">Create an account</a></p>
+    </form>
+  </main>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/login.js') }}"></script>{% endblock %}

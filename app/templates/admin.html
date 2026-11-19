@@ -1,0 +1,60 @@
+{% extends "shell.html" %}
+{% block title %}Fraud review · Ledgerwatch{% endblock %}
+{% block nav %}
+  <a href="#overview" class="active">Overview</a>
+  <a href="#queue">Review queue</a>
+  <a href="#insights">Insights</a>
+  <a href="#audit">Activity</a>
+{% endblock %}
+{% block content %}
+<header class="hero hero-admin" id="overview">
+  <div class="hero-left">
+    <p class="hero-label">Waiting for review</p>
+    <div class="hero-figure" id="open-count" aria-live="polite">&nbsp;</div>
+    <dl class="hero-stats" id="hero-stats"></dl>
+  </div>
+  <figure class="chart-wrap">
+    <figcaption>Transactions in the last 14 days</figcaption>
+    <div id="chart" class="chart" role="img" aria-label="Daily transaction volume with flagged transactions marked"></div>
+    <div class="legend"><span class="key key-bar"></span> Volume <span class="key key-dot"></span> Day with flagged transactions</div>
+  </figure>
+</header>
+
+<section id="queue" class="panel" aria-labelledby="h-queue">
+  <div class="panel-head">
+    <h2 id="h-queue">Review queue</h2>
+    <div class="queue-tools">
+      <div class="tabs" role="tablist" aria-label="Filter flags" id="flag-tabs">
+        <button role="tab" class="tab is-active" data-status="open" aria-selected="true">Open</button>
+        <button role="tab" class="tab" data-status="confirmed" aria-selected="false">Confirmed</button>
+        <button role="tab" class="tab" data-status="dismissed" aria-selected="false">Dismissed</button>
+        <button role="tab" class="tab" data-status="all" aria-selected="false">All</button>
+      </div>
+      <label class="sr-only" for="search">Search flags</label>
+      <input id="search" class="search" type="search" placeholder="Search flags" autocomplete="off">
+    </div>
+  </div>
+  <div id="queue-body" class="table-wrap"><p class="muted pad">Loading flags…</p></div>
+</section>
+
+<section id="insights" class="insights" aria-label="Insights">
+  <div>
+    <h2>How each rule is performing</h2>
+    <div id="rules-body" class="table-wrap"></div>
+  </div>
+  <div>
+    <h2>Alerts by city</h2>
+    <div id="cities-body" class="table-wrap"></div>
+  </div>
+  <div id="audit">
+    <h2>Recent activity</h2>
+    <ol id="audit-body" class="timeline"></ol>
+  </div>
+</section>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" aria-hidden="true">
+  <div id="drawer-content"></div>
+</aside>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/admin.js') }}"></script>{% endblock %}

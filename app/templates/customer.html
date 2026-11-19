@@ -1,0 +1,111 @@
+{% extends "shell.html" %}
+{% block title %}Your accounts · Ledgerwatch{% endblock %}
+{% block nav %}
+  <a href="#overview" class="active">Overview</a>
+  <a href="#accounts">Accounts</a>
+  <a href="#send">Send money</a>
+  <a href="#activity">Activity</a>
+{% endblock %}
+{% block content %}
+<header class="hero" id="overview">
+  <p class="hello">Good to see you, {{ user.name.split(' ')[0] }}</p>
+  <p class="hero-label">Total balance</p>
+  <div class="hero-figure" id="total-balance" aria-live="polite">&nbsp;</div>
+  <p class="hero-sub" id="total-sub"></p>
+</header>
+
+<div class="cols">
+  <div class="col-main">
+    <section id="accounts" class="panel" aria-labelledby="h-accounts">
+      <div class="panel-head">
+        <h2 id="h-accounts">Accounts</h2>
+        <div class="head-actions">
+          <button class="btn btn-quiet" type="button" id="btn-fund">Add funds</button>
+          <button class="btn btn-quiet" type="button" id="btn-open">Open account</button>
+        </div>
+      </div>
+      <div id="account-list" class="ledger"><p class="muted pad">Loading your accounts…</p></div>
+    </section>
+
+    <section id="activity" class="panel" aria-labelledby="h-activity">
+      <div class="panel-head">
+        <h2 id="h-activity">Recent activity</h2>
+        <div class="tabs" role="tablist" aria-label="Filter activity" id="activity-tabs">
+          <button role="tab" class="tab is-active" data-filter="all" aria-selected="true">All</button>
+          <button role="tab" class="tab" data-filter="out" aria-selected="false">Sent</button>
+          <button role="tab" class="tab" data-filter="in" aria-selected="false">Received</button>
+        </div>
+      </div>
+      <div id="activity-body" class="table-wrap"></div>
+    </section>
+  </div>
+
+  <aside class="col-side">
+    <section id="send" class="panel send" aria-labelledby="h-send">
+      <div class="panel-head"><h2 id="h-send">Send money</h2></div>
+      <form id="send-form" novalidate>
+        <label for="from">From</label>
+        <select id="from" name="from" required></select>
+
+        <label for="to">To account number</label>
+        <input id="to" name="to" inputmode="numeric" autocomplete="off" maxlength="16" placeholder="1000000000000002" required>
+        <p class="field-note" id="to-note" aria-live="polite"></p>
+
+        <div class="two">
+          <div>
+            <label for="amount">Amount (INR)</label>
+            <input id="amount" name="amount" type="number" inputmode="decimal" min="0.01" step="0.01" required>
+          </div>
+          <div>
+            <label for="city">Your city</label>
+            <input id="city" name="city" autocomplete="off" placeholder="Mumbai">
+          </div>
+        </div>
+        <p class="field-note">City simulates where you are, so the unusual-location rule can be demonstrated.</p>
+
+        <label for="note">Note <span class="optional">optional</span></label>
+        <input id="note" name="note" maxlength="200" autocomplete="off">
+
+        <p id="send-error" class="form-error" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" id="send-submit" type="submit">Send money</button>
+      </form>
+    </section>
+  </aside>
+</div>
+
+<dialog id="fund-dialog" class="dialog" aria-labelledby="fund-title">
+  <form id="fund-form" novalidate>
+    <h2 id="fund-title">Add funds</h2>
+    <p class="muted small">This is a demo bank: the money is simulated, so you can try transfers and the fraud rules.</p>
+    <label for="fund-account">Account</label>
+    <select id="fund-account" required></select>
+    <label for="fund-amount">Amount (INR, up to 10,00,000)</label>
+    <input id="fund-amount" type="number" inputmode="decimal" min="0.01" step="0.01" required>
+    <p id="fund-error" class="form-error" role="alert" hidden></p>
+    <div class="dialog-actions">
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn btn-primary" type="submit" id="fund-submit">Add funds</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="open-dialog" class="dialog" aria-labelledby="open-title">
+  <form id="open-form" novalidate>
+    <h2 id="open-title">Open another account</h2>
+    <p class="muted small">You can hold up to 5 accounts. New accounts start with a zero balance.</p>
+    <label for="open-type">Account type</label>
+    <select id="open-type" required>
+      <option value="savings">Savings</option>
+      <option value="current">Current</option>
+    </select>
+    <label for="open-branch">Branch</label>
+    <select id="open-branch" required></select>
+    <p id="open-error" class="form-error" role="alert" hidden></p>
+    <div class="dialog-actions">
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button class="btn btn-primary" type="submit" id="open-submit">Open account</button>
+    </div>
+  </form>
+</dialog>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/customer.js') }}"></script>{% endblock %}
